@@ -17,6 +17,18 @@ app.get("/api/exercises", (req, res) => {
   ]);
 });
 
+app.get("/api/exercises/:id", (req, res) => {
+  res.send(req.params.id);
+});
+
+app.get("/api/workout/:year/:month", (req, res) => {
+  res.send(req.params);
+});
+
+app.get("/api/workout/:year/", (req, res) => {
+  res.send(req.query);
+});
+
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on Port ${port}...`));
