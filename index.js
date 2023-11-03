@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World!");
 });
 
 app.get("/api/exercises", (req, res) => {
@@ -17,4 +17,6 @@ app.get("/api/exercises", (req, res) => {
   ]);
 });
 
-app.listen(3000, () => console.log("Listening on Port 3000..."));
+//PORT
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on Port ${port}...`));
