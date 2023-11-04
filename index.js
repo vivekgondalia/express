@@ -44,49 +44,39 @@ app.get("/api/workout/:year/", (req, res) => {
 //POST
 //Input Validation - 1)Define Schema, 2)validate again req.body
 app.post("/api/exercises", (req, res) => {
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-    category: Joi.string().min(2).required(),
-  });
-
-  const result = schema.validate(req.body);
-
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  //1)validate
+  const { error } = validateExercise(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
     return;
   }
 
+  //2)create
   const exercise = {
     id: exercises.length + 1,
     name: req.body.name,
     category: req.body.category,
   };
-
   exercises.push(exercise);
+
   res.send(exercise);
 });
 
 //PUT
 app.put("/api/exercises/:id", (req, res) => {
-  //1)look up the id , if not found, return 404
+  //1)find
   const exercise = exercises.find((e) => e.id == parseInt(req.params.id));
   if (!exercise)
     res.status(404).send("The exercise with the given ID was not found.");
 
-  //2)validate the input, if invalid, return 400
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-    category: Joi.string().min(2).required(),
-  });
-
-  const result = schema.validate(req.body);
-
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  //2)validate
+  const { error } = validateExercise(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
     return;
   }
 
-  //3)update course, return updated course
+  //3)update
   exercise.name = req.body.name;
   exercise.category = req.body.category;
 
@@ -96,3 +86,12 @@ app.put("/api/exercises/:id", (req, res) => {
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on Port ${port}...`));
+
+function validateExercise(exercise) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    category: Joi.string().min(2).required(),
+  });
+
+  return schema.validate(exercise);
+}
