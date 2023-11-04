@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+//Allows us to read request body in JSON
+app.use(express.json());
+
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
   { id: 2, name: "Side Raise", category: "Shoulder" },
@@ -27,12 +30,26 @@ app.get("/api/exercises/:id", (req, res) => {
   res.send(exercise);
 });
 
+//REQUEST PARAM
 app.get("/api/workout/:year/:month", (req, res) => {
   res.send(req.params);
 });
 
+//QUERY PARAM
 app.get("/api/workout/:year/", (req, res) => {
   res.send(req.query);
+});
+
+//POST
+app.post("/api/exercises", (req, res) => {
+  const exercise = {
+    id: exercises.length + 1,
+    name: req.body.name,
+    category: req.body.category,
+  };
+
+  exercises.push(exercise);
+  res.send(exercise);
 });
 
 //PORT
