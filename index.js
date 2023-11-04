@@ -2,8 +2,18 @@ const Joi = require("joi");
 const express = require("express");
 const app = express();
 
-//Allows us to read request body in JSON
+//Middleware - Allows us to read request body in JSON
 app.use(express.json());
+//Middleware - Custom
+app.use(function (req, res, next) {
+  console.log("Logging...");
+  next();
+});
+//Middleware - Authentication
+app.use(function (req, res, next) {
+  console.log("Authentication...");
+  next();
+});
 
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
