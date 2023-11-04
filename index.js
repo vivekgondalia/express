@@ -69,8 +69,28 @@ app.post("/api/exercises", (req, res) => {
 //PUT
 app.put("/api/exercises/:id", (req, res) => {
   //1)look up the id , if not found, return 404
+  const exercise = exercises.find((e) => e.id == parseInt(req.params.id));
+  if (!exercise)
+    res.status(404).send("The exercise with the given ID was not found.");
+
   //2)validate the input, if invalid, return 400
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    category: Joi.string().min(2).required(),
+  });
+
+  const result = schema.validate(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
   //3)update course, return updated course
+  exercise.name = req.body.name;
+  exercise.category = req.body.category;
+
+  res.send(exercise);
 });
 
 //PORT
