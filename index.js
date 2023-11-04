@@ -10,10 +10,15 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
-app.use(morgan("tiny"));
 app.use(logger);
 app.use(authenticator);
 
+console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
+console.log(`app :  ${app.get("env")}`);
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  console.log(">>>Middleware - Morgan enabled...");
+}
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
   { id: 2, name: "Side Raise", category: "Shoulder" },
