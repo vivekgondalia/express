@@ -26,7 +26,9 @@ app.get("/api/exercises", (req, res) => {
 app.get("/api/exercises/:id", (req, res) => {
   const exercise = exercises.find((e) => e.id == parseInt(req.params.id));
   if (!exercise)
-    res.status(404).send("The exercise with the given ID was not found.");
+    return res
+      .status(404)
+      .send("The exercise with the given ID was not found.");
 
   res.send(exercise);
 });
@@ -46,10 +48,7 @@ app.get("/api/workout/:year/", (req, res) => {
 app.post("/api/exercises", (req, res) => {
   //1)validate
   const { error } = validateExercise(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   //2)create
   const exercise = {
@@ -67,14 +66,13 @@ app.put("/api/exercises/:id", (req, res) => {
   //1)find
   const exercise = exercises.find((e) => e.id == parseInt(req.params.id));
   if (!exercise)
-    res.status(404).send("The exercise with the given ID was not found.");
+    return res
+      .status(404)
+      .send("The exercise with the given ID was not found.");
 
   //2)validate
   const { error } = validateExercise(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   //3)update
   exercise.name = req.body.name;
@@ -86,8 +84,18 @@ app.put("/api/exercises/:id", (req, res) => {
 //DELETE
 app.delete("/api/exercises/:id", (req, res) => {
   //1)Find
+  const exercise = exercises.find((e) => e.id == parseInt(req.params.id));
+  if (!exercise)
+    return res
+      .status(404)
+      .send("The exercise with the given ID was not found.");
+
   //2)Delete
+  const index = exercises.indexOf(exercise);
+  exercises.splice(index, 1);
+
   //3)Return deleted object
+  res.send(exercise);
 });
 
 //PORT
