@@ -42,7 +42,7 @@ app.get("/api/workout/:year/", (req, res) => {
 });
 
 //POST
-//Input Validation - Define Schema, validate again req.body
+//Input Validation - 1)Define Schema, 2)validate again req.body
 app.post("/api/exercises", (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
@@ -64,6 +64,13 @@ app.post("/api/exercises", (req, res) => {
 
   exercises.push(exercise);
   res.send(exercise);
+});
+
+//PUT
+app.put("/api/exercises/:id", (req, res) => {
+  //1)look up the id , if not found, return 404
+  //2)validate the input, if invalid, return 400
+  //3)update course, return updated course
 });
 
 //PORT
