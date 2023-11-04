@@ -6,6 +6,7 @@ const app = express();
 
 //Install Middlewares
 app.use(express.json());
+app.use(express.static("public"));
 app.use(logger);
 app.use(authenticator);
 
