@@ -83,6 +83,13 @@ app.put("/api/exercises/:id", (req, res) => {
   res.send(exercise);
 });
 
+//DELETE
+app.delete("/api/exercises/:id", (req, res) => {
+  //1)Find
+  //2)Delete
+  //3)Return deleted object
+});
+
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on Port ${port}...`));
