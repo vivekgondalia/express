@@ -1,3 +1,5 @@
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
 const config = require("config");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -14,12 +16,13 @@ app.use(helmet());
 app.use(logger);
 app.use(authenticator);
 
-//Configuration
-
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log(">>>Middleware - Morgan enabled...");
+  startupDebugger(">>>Middleware - Morgan enabled...");
 }
+
+//Db Work...
+dbDebugger("Connect to the DB...");
 
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
