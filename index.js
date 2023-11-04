@@ -1,19 +1,13 @@
 const Joi = require("joi");
+const logger = require("./logger");
+const authenticator = require("./authenticator");
 const express = require("express");
 const app = express();
 
-//Middleware - Allows us to read request body in JSON
+//Install Middlewares
 app.use(express.json());
-//Middleware - Custom
-app.use(function (req, res, next) {
-  console.log("Logging...");
-  next();
-});
-//Middleware - Authentication
-app.use(function (req, res, next) {
-  console.log("Authentication...");
-  next();
-});
+app.use(logger);
+app.use(authenticator);
 
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
