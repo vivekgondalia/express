@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const express = require("express");
 const app = express();
 
@@ -41,7 +42,20 @@ app.get("/api/workout/:year/", (req, res) => {
 });
 
 //POST
+//Input Validation - Define Schema, validate again req.body
 app.post("/api/exercises", (req, res) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    category: Joi.string().min(2).required(),
+  });
+
+  const result = schema.validate(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
   const exercise = {
     id: exercises.length + 1,
     name: req.body.name,
