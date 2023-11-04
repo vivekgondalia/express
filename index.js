@@ -1,3 +1,4 @@
+const config = require("config");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const Joi = require("joi");
@@ -13,12 +14,13 @@ app.use(helmet());
 app.use(logger);
 app.use(authenticator);
 
-console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
-console.log(`app :  ${app.get("env")}`);
+//Configuration
+
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   console.log(">>>Middleware - Morgan enabled...");
 }
+
 const exercises = [
   { id: 1, name: "Shoulder Press", category: "Shoulder" },
   { id: 2, name: "Side Raise", category: "Shoulder" },
